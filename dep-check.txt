@@ -1,8 +1,0 @@
-react: true
-@xyflow/react: true
-dexie: true
-katex: true
-mermaid: true
-mathjs: true
-zustand: true
-dexie-react-hooks: true
