@@ -1,59 +1,53 @@
-<div align="center" style="border-bottom: 3px double #8b5cf6; padding-bottom: 15px; margin-bottom: 30px;">
+# DataFlow
 
-# 🌌 DataFlow
-**Spatial Knowledge Representation and Algorithmic Review System Platform**
+DataFlow is a local-first knowledge graph and spaced-repetition workspace for organizing technical concepts. Nodes are connected on an interactive canvas and can carry review metadata, formulas, Mermaid diagrams, and executable JavaScript examples.
 
-</div>
+## Key Features
 
-<div style="border-left: 6px solid #3b82f6; border-radius: 8px; padding: 15px 20px; margin-bottom: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); background-color: rgba(59, 130, 246, 0.02);">
+- **Knowledge graph canvas:** Explore concept nodes and prerequisite relationships with `@xyflow/react`.
+- **Spaced repetition:** Review due cards with an FSRS-inspired scheduler and four rating choices.
+- **Node detail views:** Inspect descriptions, tags, prerequisites, LaTeX formulas, Mermaid diagrams, and code examples.
+- **Code sandbox:** Run node examples with captured console output and optional canvas rendering in the browser.
+- **Local-first persistence:** Store nodes, cards, review logs, and graph positions in IndexedDB through Dexie.
+- **Review analytics:** View due-card counts, retention, review activity, and category breakdowns in the statistics panel.
+- **Dark interface:** Use the responsive dark-themed interface for graph navigation, node details, and reviews.
 
-## 📌 Abstract
-DataFlow is an advanced, open-source pedagogical platform engineered to synthesize spatial knowledge representation with state-of-the-art memory scheduling algorithms. By combining a highly interactive node-based visual learning environment with the Free Spaced Repetition Scheduler (FSRS), DataFlow empowers users to construct complex, interconnected knowledge graphs. This robust system allows learners to visually map out conceptual relationships and significantly optimize their long-term cognitive retention through scientifically validated review schedules, completely transcending the distinct limitations of traditional linear flashcard systems in modern technical education.
+## Technical Stack
 
-</div>
+| Area | Technology |
+| --- | --- |
+| UI | React 19.1 with React DOM |
+| Language | TypeScript 5.8 |
+| Build tool | Vite 6 |
+| Styling | Tailwind CSS 3, PostCSS, Autoprefixer |
+| Graph canvas | `@xyflow/react` 12 |
+| State management | Zustand 5 |
+| Persistence | Dexie 4 and `dexie-react-hooks` |
+| Mathematical rendering and evaluation | KaTeX 0.16 and mathjs 14 |
+| Diagram rendering | Mermaid 11 |
 
-<div style="border-left: 6px solid #10b981; border-radius: 8px; padding: 15px 20px; margin-bottom: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); background-color: rgba(16, 185, 129, 0.02);">
+## Installation and Development
 
-## 🏗️ Core Architecture
-At its technical foundation, DataFlow continuously operates as a local-first, privacy-respecting web application. It diverges entirely from conventional sequential study tools by fully adopting an infinite spatial canvas approach. Users interact with a responsive, dynamic graph interface where nodes represent distinct, atomic concepts. These nodes serve as fully featured markdown environments capable of rendering complex technical documentation. Built-in module support includes inline LaTeX rendering for complex mathematical and scientific formulas, Mermaid.js for embedded diagrammatic code generation, and a secure, sandboxed code execution environment for live programming tests.
+1. Clone the repository and enter the project directory.
+2. Install dependencies:
 
-</div>
+   ```bash
+   npm install
+   ```
 
-<div style="border: 2px dashed #6366f1; border-radius: 10px; padding: 20px; margin-bottom: 25px; background-color: rgba(99, 102, 241, 0.02);">
+3. Start the development server:
 
-## ✨ Key Features
-* **Visual Knowledge Graphs:** Construct and intuitively navigate intricate networks of information using a robust node-link architecture powered by Cytoscape.js, complete with automated Dagre structural mapping and layouts.
-* **Algorithmic Review Engine:** Directly integrates the FSRS (Free Spaced Repetition Scheduler) algorithm to dynamically calculate optimal review intervals, effectively minimizing memory decay while actively reducing the user's daily cognitive retention load.
-* **Rich Media Sandbox:** Each node independently acts as a comprehensive technical sandbox. Support extends beyond standard Markdown to encompass LaTeX, Mermaid diagrams, and executable source code blocks.
-* **Local-First Database:** Utilizes a persistent, embedded in-browser database to ensure that researchers and students maintain absolute ownership, fundamental security, and privacy over their personal knowledge repositories.
-* **Comprehensive Analytics:** Features dedicated review and statistical panels designed to track retention rates, daily review burdens, and historical learning velocity over time.
+   ```bash
+   npm run dev
+   ```
 
-</div>
+4. Open the local URL printed by Vite.
 
-<div style="border-left: 6px solid #f59e0b; border-radius: 8px; padding: 15px 20px; margin-bottom: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); background-color: rgba(245, 158, 11, 0.02);">
+## Scripts
 
-## ⚙️ Technical Stack
-DataFlow is rigorously built upon a modern, highly optimized JavaScript ecosystem to constantly ensure maximum application performance:
-* **Core Framework:** React paired with TypeScript for robust, type-safe component architecture.
-* **Build Pipeline:** Vite for rapid hot-module replacement and highly optimized production bundling.
-* **Styling:** Tailwind CSS for responsive, accessible, and utility-first visual design.
-* **Graph Visualization:** Cytoscape.js implemented for performant, large-scale node rendering.
-* **State Management:** Modular global store implementations managing synchronized graph interactions and review states.
+- `npm run dev` — start the Vite development server.
+- `npm run build` — run the TypeScript project build and create a production bundle.
 
-</div>
+## Current Scope
 
-<div style="border: 2px solid #ef4444; border-radius: 8px; padding: 15px 20px; margin-bottom: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); background-color: rgba(239, 68, 68, 0.02);">
-
-## 🚀 Installation and Development
-To properly deploy the DataFlow environment locally for academic research or personal use, ensure that Node.js is currently installed on your operating system.
-1. Safely clone the repository to your local machine using standard Git control commands.
-2. Then navigate directly into the newly created main project directory.
-3. Next install the absolutely required system dependencies utilizing `npm install`.
-4. Now initialize the local development server immediately via `npm run dev`.
-5. Finally access the application via the local port securely provided.
-
-<hr style="border: 1px solid #ef4444; opacity: 0.3; margin: 20px 0;">
-
-<div align="center"><i>DataFlow merges spatial mapping with spaced repetition to consolidate your long-term memory permanently.</i></div>
-
-</div>
+DataFlow currently focuses on the graph, node-detail, review, sandbox, and statistics workflows. Automated tests, import/export, node CRUD, and additional accessibility and security hardening are tracked as follow-up engineering work.
