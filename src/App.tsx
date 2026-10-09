@@ -5,11 +5,12 @@ import { Sidebar } from './components/layout/Sidebar';
 import { Header } from './components/layout/Header';
 import { ReviewPanel } from './components/review/ReviewPanel';
 import { StatsPanel } from './components/review/StatsPanel';
+import { NodeEditorModal } from './components/graph/NodeEditorModal';
 import { useGraphStore } from './stores/graphStore';
 import { useReviewStore } from './stores/reviewStore';
 
 function App() {
-  const { initialize, isInitialized, isModalOpen, viewMode } = useGraphStore();
+  const { initialize, isInitialized, initializationError, isModalOpen, viewMode } = useGraphStore();
   const { isReviewing, loadDueCards } = useReviewStore();
   const [loading, setLoading] = useState(true);
 
@@ -23,6 +24,9 @@ function App() {
     init();
   }, [initialize, loadDueCards]);
 
+  if (initializationError) {
+    return <div className="h-screen w-screen flex items-center justify-center bg-surface-950 p-6"><div className="max-w-lg rounded-2xl border border-rose-500/30 bg-rose-500/10 p-8 text-center"><h1 className="text-xl font-bold text-rose-300">DataFlow could not start</h1><p className="mt-3 text-sm text-white/60">{initializationError}</p><p className="mt-4 text-xs text-white/40">Check browser storage permissions and reload the page.</p></div></div>;
+  }
   if (loading || !isInitialized) {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-surface-950">
@@ -66,7 +70,7 @@ function App() {
         {/* Content */}
         <main className="flex-1 relative overflow-hidden">
           {viewMode === 'graph' && <GraphCanvas />}
-          {viewMode === 'sandbox' && (
+          {viewMode === 'stats' && (
             <div className="h-full overflow-y-auto p-8">
               <StatsPanel />
             </div>
@@ -76,6 +80,7 @@ function App() {
 
       {/* Modals & Overlays */}
       {isModalOpen && <NodeModal />}
+      <NodeEditorModal />
       {isReviewing && <ReviewPanel />}
     </div>
   );

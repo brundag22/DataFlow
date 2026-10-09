@@ -18,7 +18,7 @@ export function LatexRenderer({ latex, displayMode = true, className = '' }: Pro
         displayMode,
         throwOnError: false,
         strict: false,
-        trust: true,
+        trust: false,
       });
       setError(null);
     } catch (err) {

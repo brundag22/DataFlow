@@ -15,6 +15,7 @@ export class DataFlowDB extends Dexie {
       reviewLogs: '++id, nodeId, review',
       positions: 'nodeId',
     });
+    this.version(2).stores({}).upgrade(() => undefined);
   }
 }
 

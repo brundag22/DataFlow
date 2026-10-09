@@ -31,6 +31,7 @@ export interface FSRSCard {
   lapses: number;
   due: number;
   lastReview: number;
+  learningStep?: number;
 }
 
 export interface ReviewLog {
@@ -60,5 +61,5 @@ export interface AppStats {
   reviewsToday: number;
 }
 
-export type ViewMode = 'graph' | 'review' | 'sandbox';
+export type ViewMode = 'graph' | 'review' | 'stats';
 export type SidebarTab = 'nodes' | 'stats' | 'settings';

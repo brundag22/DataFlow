@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useGraphStore } from '../../stores/graphStore';
 import { useReviewStore } from '../../stores/reviewStore';
 import { db } from '../../db/database';
 import type { KnowledgeNode } from '../../types';
+import { exportData, importData } from '../../db/transfer';
 
 const CATEGORY_CONFIG: Record<string, { color: string; dot: string }> = {
   formula: { color: 'bg-cyan-400', dot: 'bg-cyan-400' },
@@ -22,12 +23,13 @@ const DIFFICULTY_DOTS: Record<string, number> = {
 const CATEGORIES = ['All', 'formula', 'algorithm', 'architecture', 'concept', 'theorem'];
 
 export function Sidebar() {
-  const { sidebarCollapsed, toggleSidebar, openModal, dueNodeIds } = useGraphStore();
+  const { sidebarCollapsed, toggleSidebar, openModal, dueNodeIds, initialize, prerequisiteGateEnabled, setPrerequisiteGateEnabled } = useGraphStore();
   const [activeTab, setActiveTab] = useState<'nodes' | 'stats' | 'settings'>('nodes');
   const [nodes, setNodes] = useState<KnowledgeNode[]>([]);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const { stats, loadStats } = useReviewStore();
+  const importRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchNodes = async () => {
@@ -46,7 +48,7 @@ export function Sidebar() {
 
   return (
     <div
-      className={`relative flex flex-col h-full bg-[#0a0825]/90 backdrop-blur-xl border-r border-white/5 transition-all duration-300 ease-in-out ${
+      className={`relative z-40 flex flex-col h-full max-md:absolute max-md:left-0 max-md:top-0 bg-[#0a0825]/90 backdrop-blur-xl border-r border-white/5 transition-all duration-300 ease-in-out ${
         sidebarCollapsed ? 'w-16' : 'w-[280px]'
       }`}
     >
@@ -70,6 +72,7 @@ export function Sidebar() {
           return (
             <button
               key={tab}
+              aria-label={`${tab} tab`}
               onClick={() => setActiveTab(tab)}
               className={`p-2 rounded-lg transition-all text-sm ${
                 activeTab === tab
@@ -182,10 +185,13 @@ export function Sidebar() {
               <label className="text-sm text-white/50 block mb-2">Daily Review Limit</label>
               <input type="number" defaultValue={50} className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white/80 focus:outline-none focus:border-indigo-500/50" />
             </div>
+            <label className="flex items-center gap-3 text-sm text-white/60"><input type="checkbox" checked={prerequisiteGateEnabled} onChange={e => void setPrerequisiteGateEnabled(e.target.checked)} className="accent-indigo-500" /> Require prerequisites to have 7-day stability</label>
             <div className="space-y-2 pt-4 border-t border-white/5">
-              <button className="w-full py-2 bg-white/[0.04] hover:bg-white/[0.08] text-sm text-white/60 rounded-lg border border-white/[0.08] transition-colors">
+              <button onClick={() => void exportData()} className="w-full py-2 bg-white/[0.04] hover:bg-white/[0.08] text-sm text-white/60 rounded-lg border border-white/[0.08] transition-colors">
                 📦 Export Data
               </button>
+              <button onClick={() => importRef.current?.click()} className="w-full py-2 bg-white/[0.04] hover:bg-white/[0.08] text-sm text-white/60 rounded-lg border border-white/[0.08] transition-colors">📥 Import Data</button>
+              <input ref={importRef} type="file" accept="application/json" className="hidden" onChange={async e => { const file = e.target.files?.[0]; if (!file) return; try { await importData(file); await initialize(); } catch (error) { window.alert(error instanceof Error ? error.message : 'Import failed.'); } e.target.value = ''; }} />
               <button className="w-full py-2 bg-rose-500/10 hover:bg-rose-500/20 text-sm text-rose-400 rounded-lg border border-rose-500/20 transition-colors">
                 🗑 Reset Progress
               </button>
@@ -198,6 +204,7 @@ export function Sidebar() {
       {/* Collapse Toggle */}
       <button
         onClick={toggleSidebar}
+        aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         className="p-3 border-t border-white/5 hover:bg-white/[0.04] flex items-center justify-center text-white/30 transition-colors"
       >
         {sidebarCollapsed ? '▶' : '◀'}

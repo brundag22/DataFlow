@@ -9,6 +9,7 @@ interface CustomNodeData {
   isDue: boolean;
   retention: number | null;
   tags: string[];
+  isLocked?: boolean;
   [key: string]: unknown;
 }
 
@@ -51,7 +52,7 @@ const CustomNodeComponent = ({ data }: NodeProps) => {
             {config.icon}
           </span>
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-semibold text-white/90 leading-tight line-clamp-2">{nodeData.label}</h3>
+            <h3 className="text-sm font-semibold text-white/90 leading-tight line-clamp-2">{nodeData.isLocked ? '🔒 ' : ''}{nodeData.label}</h3>
           </div>
         </div>
         
@@ -71,6 +72,7 @@ const CustomNodeComponent = ({ data }: NodeProps) => {
           {nodeData.isDue && (
             <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
           )}
+          {nodeData.isLocked && <span className="text-[10px] text-amber-300">Prerequisites gated</span>}
         </div>
       </div>
       

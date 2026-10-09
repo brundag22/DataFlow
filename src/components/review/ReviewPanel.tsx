@@ -6,6 +6,7 @@ import { LatexRenderer } from '../sandbox/LatexRenderer';
 import { MermaidRenderer } from '../sandbox/MermaidRenderer';
 import { CodeExecutor } from '../sandbox/CodeExecutor';
 import type { KnowledgeNode, Rating } from '../../types';
+import { previewIntervals } from '../../engine/fsrs';
 
 const categoryConfig: Record<string, { icon: string; color: string }> = {
   formula: { icon: '∑', color: 'text-cyan-400' },
@@ -15,12 +16,13 @@ const categoryConfig: Record<string, { icon: string; color: string }> = {
   theorem: { icon: '∿', color: 'text-emerald-400' },
 };
 
-const ratingConfig: { rating: Rating; label: string; color: string; bg: string; key: string; interval: string }[] = [
-  { rating: 1, label: 'Again', color: 'text-red-400', bg: 'bg-red-500/15 hover:bg-red-500/25 border-red-500/20', key: '1', interval: '< 1 min' },
-  { rating: 2, label: 'Hard', color: 'text-orange-400', bg: 'bg-orange-500/15 hover:bg-orange-500/25 border-orange-500/20', key: '2', interval: '~6 min' },
-  { rating: 3, label: 'Good', color: 'text-emerald-400', bg: 'bg-emerald-500/15 hover:bg-emerald-500/25 border-emerald-500/20', key: '3', interval: '~10 min' },
-  { rating: 4, label: 'Easy', color: 'text-blue-400', bg: 'bg-blue-500/15 hover:bg-blue-500/25 border-blue-500/20', key: '4', interval: '~4 days' },
+const ratingConfig: { rating: Rating; label: string; color: string; bg: string; key: string }[] = [
+  { rating: 1, label: 'Again', color: 'text-red-400', bg: 'bg-red-500/15 hover:bg-red-500/25 border-red-500/20', key: '1' },
+  { rating: 2, label: 'Hard', color: 'text-orange-400', bg: 'bg-orange-500/15 hover:bg-orange-500/25 border-orange-500/20', key: '2' },
+  { rating: 3, label: 'Good', color: 'text-emerald-400', bg: 'bg-emerald-500/15 hover:bg-emerald-500/25 border-emerald-500/20', key: '3' },
+  { rating: 4, label: 'Easy', color: 'text-blue-400', bg: 'bg-blue-500/15 hover:bg-blue-500/25 border-blue-500/20', key: '4' },
 ];
+const formatInterval = (milliseconds: number) => milliseconds < 3_600_000 ? `${Math.max(1, Math.round(milliseconds / 60_000))}m` : `${Math.max(1, Math.round(milliseconds / 86_400_000))}d`;
 
 export function ReviewPanel() {
   const {
@@ -135,6 +137,7 @@ export function ReviewPanel() {
   const progress = dueCards.length > 0 ? ((currentCardIndex + 1) / dueCards.length) * 100 : 0;
   const accuracy = sessionStats.reviewed > 0 ? Math.round((sessionStats.correct / sessionStats.reviewed) * 100) : 0;
   const config = currentNode ? categoryConfig[currentNode.category] : null;
+  const intervals = previewIntervals(currentCard);
 
   return (
     <div className="fixed inset-0 z-50 bg-surface-950/[0.98] flex flex-col items-center justify-center p-8">
@@ -147,7 +150,7 @@ export function ReviewPanel() {
           <span>⏱ {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}</span>
           <span>🎯 {accuracy}%</span>
         </div>
-        <button onClick={handleExit} className="text-white/30 hover:text-white/60 transition-colors text-lg hover:bg-white/5 p-2 rounded-lg">✕</button>
+        <button aria-label="Exit review" onClick={handleExit} className="text-white/30 hover:text-white/60 transition-colors text-lg hover:bg-white/5 p-2 rounded-lg">✕</button>
       </div>
 
       {/* Progress Bar */}
@@ -206,14 +209,14 @@ export function ReviewPanel() {
           {showAnswer && (
             <div className="p-6 border-t border-white/[0.06]">
               <div className="grid grid-cols-4 gap-3">
-                {ratingConfig.map(({ rating, label, color, bg, key, interval }) => (
+                {ratingConfig.map(({ rating, label, color, bg, key }) => (
                   <button
                     key={rating}
                     onClick={() => rateCard(rating)}
                     className={`flex flex-col items-center gap-1 py-3 px-2 rounded-xl border ${bg} transition-all hover:scale-105`}
                   >
                     <span className={`text-sm font-semibold ${color}`}>{label}</span>
-                    <span className="text-[10px] text-white/30">{interval}</span>
+                    <span className="text-[10px] text-white/30">{formatInterval(intervals[rating])}</span>
                     <span className="text-[9px] text-white/20">({key})</span>
                   </button>
                 ))}

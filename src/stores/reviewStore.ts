@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { FSRSCard, Rating, AppStats } from '../types';
 import { getDueCards, reviewCard as processReview, getReviewStats } from '../engine/scheduler';
 import { useGraphStore } from './graphStore';
+import { db } from '../db/database';
 
 interface ReviewState {
   dueCards: FSRSCard[];
@@ -34,7 +35,16 @@ export const useReviewStore = create<ReviewState>((set, get) => ({
 
   loadDueCards: async () => {
     const cards = await getDueCards(50);
-    set({ dueCards: cards });
+    const { prerequisiteGateEnabled } = useGraphStore.getState();
+    const gatedCards = prerequisiteGateEnabled ? await (async () => {
+      const [nodes, allCards] = await Promise.all([db.nodes.toArray(), db.cards.toArray()]);
+      const cardMap = new Map(allCards.map(card => [card.nodeId, card]));
+      return cards.filter(card => {
+        const node = nodes.find(item => item.id === card.nodeId);
+        return !node || node.prerequisites.every(id => (cardMap.get(id)?.stability || 0) >= 7);
+      });
+    })() : cards;
+    set({ dueCards: gatedCards });
   },
 
   startReview: () => set({

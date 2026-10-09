@@ -29,20 +29,23 @@ export function StatsPanel() {
       const now = Date.now();
       const days: { day: string; count: number }[] = [];
       const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const firstDay = new Date(now - 6 * 86400000);
+      firstDay.setHours(0, 0, 0, 0);
+      const logs = await db.reviewLogs.where('review').between(firstDay.getTime(), now, true, true).toArray();
+      const counts = new Map<string, number>();
+      for (const log of logs) {
+        const date = new Date(log.review);
+        date.setHours(0, 0, 0, 0);
+        const key = date.toISOString().slice(0, 10);
+        counts.set(key, (counts.get(key) || 0) + 1);
+      }
       
       for (let i = 6; i >= 0; i--) {
         const dayStart = new Date(now - i * 86400000);
         dayStart.setHours(0, 0, 0, 0);
-        const dayEnd = new Date(dayStart.getTime() + 86400000);
-        
-        const count = await db.reviewLogs
-          .where('review')
-          .between(dayStart.getTime(), dayEnd.getTime())
-          .count();
-        
         days.push({
           day: dayNames[dayStart.getDay()],
-          count,
+          count: counts.get(dayStart.toISOString().slice(0, 10)) || 0,
         });
       }
       setRecentLogs(days);

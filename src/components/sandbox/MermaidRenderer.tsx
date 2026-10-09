@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
+import DOMPurify from 'dompurify';
 
 mermaid.initialize({
   startOnLoad: false,
+  securityLevel: 'strict',
   theme: 'dark',
   themeVariables: {
     primaryColor: '#6366f1',
@@ -45,7 +47,7 @@ export function MermaidRenderer({ chart, className = '' }: Props) {
       try {
         const { svg } = await mermaid.render(uniqueId, chart);
         if (!cancelled) {
-          setSvgContent(svg);
+          setSvgContent(DOMPurify.sanitize(svg, { USE_PROFILES: { svg: true, svgFilters: true } }));
           setError(null);
         }
       } catch (err) {

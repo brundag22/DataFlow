@@ -6,6 +6,7 @@ import type { KnowledgeNode, FSRSCard, Rating } from '../../types';
 import { LatexRenderer } from '../sandbox/LatexRenderer';
 import { MermaidRenderer } from '../sandbox/MermaidRenderer';
 import { SandboxCard } from '../sandbox/SandboxCard';
+import { MarkdownRenderer } from '../sandbox/MarkdownRenderer';
 
 const categoryColors: Record<string, string> = {
   formula: '#22d3ee',
@@ -24,7 +25,7 @@ const categoryIcons: Record<string, string> = {
 };
 
 export function NodeModal() {
-  const { selectedNodeId, closeModal, refreshDueState } = useGraphStore();
+  const { selectedNodeId, closeModal, refreshDueState, openEditor } = useGraphStore();
   const [node, setNode] = useState<KnowledgeNode | null>(null);
   const [card, setCard] = useState<FSRSCard | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'sandbox' | 'review'>('overview');
@@ -100,10 +101,12 @@ export function NodeModal() {
           </div>
           <button 
             onClick={closeModal}
+            aria-label="Close node details"
             className="p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
           >
             ✕
           </button>
+          <button onClick={() => selectedNodeId && openEditor(selectedNodeId)} className="rounded-lg border border-indigo-400/30 px-3 py-2 text-xs text-indigo-300">Edit</button>
         </div>
 
         {/* Tabs */}
@@ -136,6 +139,7 @@ export function NodeModal() {
                   <p className="text-lg leading-relaxed">{node.description}</p>
                 </div>
               )}
+              {node.markdown && <MarkdownRenderer content={node.markdown} />}
               
               {node.tags && node.tags.length > 0 && (
                 <div>

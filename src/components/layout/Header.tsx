@@ -5,11 +5,11 @@ import type { ViewMode } from '../../types';
 const viewModes: { mode: ViewMode; icon: string; label: string }[] = [
   { mode: 'graph', icon: '🔗', label: 'Graph' },
   { mode: 'review', icon: '🧠', label: 'Review' },
-  { mode: 'sandbox', icon: '📊', label: 'Dashboard' },
+  { mode: 'stats', icon: '📊', label: 'Dashboard' },
 ];
 
 export function Header() {
-  const { viewMode, setViewMode, dueNodeIds, nodes } = useGraphStore();
+  const { viewMode, setViewMode, dueNodeIds, nodes, openEditor } = useGraphStore();
   const { startReview, loadDueCards, dueCards } = useReviewStore();
 
   const handleViewChange = async (mode: ViewMode) => {
@@ -61,7 +61,7 @@ export function Header() {
         )}
 
         {/* Add Node Button */}
-        <button className="w-8 h-8 rounded-lg bg-gradient-to-r from-indigo-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all hover:scale-105">
+        <button aria-label="Create node" onClick={() => openEditor()} className="w-8 h-8 rounded-lg bg-gradient-to-r from-indigo-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all hover:scale-105">
           +
         </button>
       </div>

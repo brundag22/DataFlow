@@ -17,7 +17,7 @@ import { useGraphStore } from '../../stores/graphStore';
 const nodeTypes: NodeTypes = { knowledge: CustomNode };
 
 function GraphCanvasInner() {
-  const { nodes, edges, onNodesChange, onEdgesChange, openModal, isInitialized } = useGraphStore();
+  const { nodes, edges, onNodesChange, onEdgesChange, onNodeDragStop, autoLayout, openModal, isInitialized } = useGraphStore();
   const { fitView } = useReactFlow();
 
   useEffect(() => {
@@ -36,6 +36,7 @@ function GraphCanvasInner() {
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
+        onNodeDragStop={(_, node) => { void onNodeDragStop(node); }}
         onEdgesChange={onEdgesChange}
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
@@ -76,6 +77,9 @@ function GraphCanvasInner() {
               <p className="text-[10px] text-white/40 font-medium tracking-wider uppercase">Knowledge Graph Engine</p>
             </div>
           </div>
+        </Panel>
+        <Panel position="top-right">
+          <button aria-label="Auto layout graph" onClick={() => void autoLayout()} className="rounded-lg border border-white/10 bg-surface-950/80 px-3 py-2 text-xs text-white/70 hover:bg-white/10">Auto-layout</button>
         </Panel>
       </ReactFlow>
     </div>
