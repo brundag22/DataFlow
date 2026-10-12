@@ -28,9 +28,11 @@ export function NodeEditorModal() {
   const [prerequisiteText, setPrerequisiteText] = useState('');
   const [tagText, setTagText] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [availableNodes, setAvailableNodes] = useState<KnowledgeNode[]>([]);
 
   useEffect(() => {
     if (!isEditorOpen) return;
+    db.nodes.toArray().then(items => setAvailableNodes(items.filter(item => item.id !== selectedNodeId)));
     if (selectedNodeId) db.nodes.get(selectedNodeId).then(found => { if (found) { setNode(found); setPrerequisiteText(found.prerequisites.join(', ')); setTagText(found.tags.join(', ')); } });
     else { setNode(emptyNode()); setPrerequisiteText(''); setTagText(''); }
     setError(null);
@@ -70,7 +72,7 @@ export function NodeEditorModal() {
         <label className="text-sm text-white/60">Difficulty<select value={node.difficulty} onChange={e => update('difficulty', e.target.value as NodeDifficulty)} className="mt-1 w-full rounded-lg bg-white/5 border border-white/10 p-2 text-white">{difficulties.map(v => <option key={v}>{v}</option>)}</select></label>
         <label className="text-sm text-white/60">Tags<input value={tagText} onChange={e => setTagText(e.target.value)} placeholder="comma, separated" className="mt-1 w-full rounded-lg bg-white/5 border border-white/10 p-2 text-white" /></label>
       </div>
-      <label className="mt-4 block text-sm text-white/60">Prerequisite node IDs<input value={prerequisiteText} onChange={e => setPrerequisiteText(e.target.value)} placeholder="id-one, id-two" className="mt-1 w-full rounded-lg bg-white/5 border border-white/10 p-2 text-white" /></label>
+      <label className="mt-4 block text-sm text-white/60">Prerequisites <span className="text-white/30">(optional)</span><select multiple value={prerequisiteText ? prerequisiteText.split(',').filter(Boolean) : []} onChange={e => setPrerequisiteText(Array.from(e.target.selectedOptions, option => option.value).join(','))} className="mt-1 min-h-24 w-full rounded-lg border border-white/10 bg-white/5 p-2 text-sm text-white">{availableNodes.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}</select><span className="mt-1 block text-xs text-white/30">Hold Ctrl/Cmd to select multiple. Prerequisites must already exist.</span></label>
       {fields.map(({ key, label }) => <label key={key} className="mt-4 block text-sm text-white/60">{label}<textarea value={(node[key] as string) || ''} onChange={e => update(key, e.target.value)} rows={key === 'description' || key === 'markdown' ? 3 : 4} className="mt-1 w-full rounded-lg bg-white/5 border border-white/10 p-2 font-mono text-sm text-white" /></label>)}
       <div className="mt-6 flex justify-between"><div>{selectedNodeId && <button onClick={remove} className="rounded-lg border border-rose-500/30 px-4 py-2 text-rose-300 hover:bg-rose-500/10">Delete</button>}</div><div className="flex gap-2"><button onClick={closeEditor} className="rounded-lg px-4 py-2 text-white/60">Cancel</button><button onClick={save} className="rounded-lg bg-indigo-500 px-4 py-2 font-semibold text-white hover:bg-indigo-400">Save node</button></div></div>
     </div>

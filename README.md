@@ -40,7 +40,7 @@ Everything lives in your browser. No account, no server, no tracking.
 |---|---|---|
 | 🕸️ | **Knowledge graph canvas** | Drag, zoom and pan nodes with a minimap, category colours and animated prerequisite edges, built on React Flow |
 | 🧠 | **FSRS-style scheduler** | Targets 90% retention using stability, difficulty and retrievability, with live interval previews on the rating buttons |
-| ➕ | **Node CRUD** | Create, edit and delete nodes; prerequisite cycles are rejected; deleting cleans up cards, logs, positions and references |
+| ➕ | **Node CRUD** | Create, edit and delete nodes from a guided form; choose prerequisites by title, cycles are rejected, and deleting cleans up related data |
 | ∑ | **LaTeX** | KaTeX rendering for formulae |
 | 🔀 | **Mermaid diagrams** | Flowcharts, graphs and architecture diagrams inside any node |
 | ▶️ | **Code runner** | Run JavaScript in an isolated Web Worker with a captured console and a hard timeout |
@@ -51,7 +51,7 @@ Everything lives in your browser. No account, no server, no tracking.
 | 💾 | **Export / Import** | Back up or move your whole graph as one validated JSON file |
 | ♿ | **Accessible and responsive** | Keyboard shortcuts, focus rings, aria-labels, collapsible mobile sidebar |
 
-> 🌱 Ships with a seeded graph of **20 nodes** across linear algebra, graph theory, algorithms and system design, with **19 prerequisite edges**.
+> 🆕 Starts with a clean, empty workspace so your graph reflects what you actually want to learn. Create nodes from the **+** button or import a backup from Settings.
 
 ---
 
@@ -67,6 +67,8 @@ npm run dev
 ```
 
 Open the local URL that Vite prints (usually `http://localhost:5173`).
+
+On first launch, DataFlow opens an empty canvas with a short onboarding prompt. Select **Create your first node**, add a title, and optionally choose existing prerequisites from the multi-select list. Use **Settings → Export Data** for backups before clearing browser data or moving devices.
 
 ### 📜 Scripts
 
@@ -121,7 +123,6 @@ src/
 ├── engine/         fsrs.ts, scheduler.ts
 ├── stores/         graphStore.ts, reviewStore.ts
 ├── db/             database.ts (Dexie schema)
-├── data/           seedData.ts
 └── types/          index.ts
 ```
 
@@ -198,7 +199,7 @@ States: `new → learning → review ⇄ relearning`
 npm test
 ```
 
-The suite covers the scheduling maths (initial stability and difficulty, retrievability, interval rule), the lapse and relearning transition, atomic card and log writes, and streak calculation.
+The suite covers the scheduling maths (initial stability and difficulty, retrievability, interval rule), the lapse and relearning transition, atomic card and log writes, streak calculation, and Mermaid syntax parsing.
 
 ---
 

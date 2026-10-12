@@ -83,7 +83,7 @@ DataFlow stores its working data in the browser and supports complete JSON expor
 
 ## Product Walkthrough
 
-1. **Explore** the seeded knowledge graph.
+1. **Create your first node** from the empty canvas onboarding prompt or import a JSON backup.
 2. **Open a node** to read its explanation and inspect its technical content.
 3. **Create or edit nodes** with categories, tags, formulas, diagrams, code, and prerequisites.
 4. **Review due concepts** using the keyboard-friendly rating flow.
@@ -207,7 +207,6 @@ The repository also runs these checks in GitHub Actions for pushes and pull requ
 DataFlow/
 ├── src/
 │   ├── components/       UI, graph, review, layout, and sandbox components
-│   ├── data/             Seed knowledge graph data
 │   ├── db/               Dexie database and JSON transfer helpers
 │   ├── engine/           FSRS maths and review scheduler
 │   ├── stores/           Zustand application state

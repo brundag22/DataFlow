@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { type Node, type Edge, applyNodeChanges, applyEdgeChanges, type NodeChange, type EdgeChange } from '@xyflow/react';
 import type { KnowledgeNode, ViewMode, SidebarTab } from '../types';
 import { db } from '../db/database';
-import { seedNodes, seedEdges, seedPositions } from '../data/seedData';
 import { initializeCards, getDueNodeIds, getAllRetentions } from '../engine/scheduler';
 import dagre from '@dagrejs/dagre';
 
@@ -132,11 +131,6 @@ export const useGraphStore = create<GraphState>((set, get) => ({
 
   initialize: async () => {
     try {
-      const count = await db.nodes.count();
-      if (count === 0) {
-        await db.nodes.bulkAdd(seedNodes);
-        for (const pos of seedPositions) await db.positions.put(pos);
-      }
       const allNodes = await db.nodes.toArray();
       const positions = await db.positions.toArray();
       const posMap = new Map(positions.map(p => [p.nodeId, { x: p.x, y: p.y }]));

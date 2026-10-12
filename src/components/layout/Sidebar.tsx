@@ -23,7 +23,7 @@ const DIFFICULTY_DOTS: Record<string, number> = {
 const CATEGORIES = ['All', 'formula', 'algorithm', 'architecture', 'concept', 'theorem'];
 
 export function Sidebar() {
-  const { sidebarCollapsed, toggleSidebar, openModal, dueNodeIds, initialize, prerequisiteGateEnabled, setPrerequisiteGateEnabled } = useGraphStore();
+  const { sidebarCollapsed, toggleSidebar, openModal, dueNodeIds, initialize, isInitialized, prerequisiteGateEnabled, setPrerequisiteGateEnabled } = useGraphStore();
   const [activeTab, setActiveTab] = useState<'nodes' | 'stats' | 'settings'>('nodes');
   const [nodes, setNodes] = useState<KnowledgeNode[]>([]);
   const [search, setSearch] = useState('');
@@ -38,7 +38,7 @@ export function Sidebar() {
     };
     fetchNodes();
     loadStats();
-  }, [loadStats]);
+  }, [loadStats, isInitialized]);
 
   const filteredNodes = nodes.filter(n => {
     const matchSearch = n.title.toLowerCase().includes(search.toLowerCase());
@@ -113,6 +113,13 @@ export function Sidebar() {
               ))}
             </div>
             <div className="flex-1 overflow-y-auto space-y-1 pr-1">
+              {filteredNodes.length === 0 && (
+                <div className="rounded-xl border border-dashed border-white/10 p-5 text-center">
+                  <p className="text-sm font-medium text-white/70">{nodes.length === 0 ? 'Your graph is empty' : 'No matching nodes'}</p>
+                  <p className="mt-2 text-xs leading-5 text-white/35">{nodes.length === 0 ? 'Create a node from the + button to begin.' : 'Try a different search or category.'}</p>
+                  {nodes.length === 0 && <button onClick={() => useGraphStore.getState().openEditor()} className="mt-3 rounded-lg bg-indigo-500/20 px-3 py-2 text-xs font-semibold text-indigo-300 hover:bg-indigo-500/30">Create node</button>}
+                </div>
+              )}
               {filteredNodes.map((node) => {
                 const isDue = dueNodeIds.has(node.id);
                 const dots = DIFFICULTY_DOTS[node.difficulty] || 1;

@@ -17,7 +17,7 @@ import { useGraphStore } from '../../stores/graphStore';
 const nodeTypes: NodeTypes = { knowledge: CustomNode };
 
 function GraphCanvasInner() {
-  const { nodes, edges, onNodesChange, onEdgesChange, onNodeDragStop, autoLayout, openModal, isInitialized } = useGraphStore();
+  const { nodes, edges, onNodesChange, onEdgesChange, onNodeDragStop, autoLayout, openModal, openEditor, isInitialized } = useGraphStore();
   const { fitView } = useReactFlow();
 
   useEffect(() => {
@@ -79,8 +79,19 @@ function GraphCanvasInner() {
           </div>
         </Panel>
         <Panel position="top-right">
-          <button aria-label="Auto layout graph" onClick={() => void autoLayout()} className="rounded-lg border border-white/10 bg-surface-950/80 px-3 py-2 text-xs text-white/70 hover:bg-white/10">Auto-layout</button>
+          <button aria-label="Auto layout graph" onClick={() => void autoLayout()} disabled={nodes.length < 2} className="rounded-lg border border-white/10 bg-surface-950/80 px-3 py-2 text-xs text-white/70 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40">Auto-layout</button>
         </Panel>
+        {nodes.length === 0 && (
+          <Panel position="top-center">
+            <div className="mt-20 w-[min(92vw,30rem)] max-w-xl rounded-2xl border border-indigo-400/20 bg-[#0f0d2e]/95 p-8 text-center shadow-2xl backdrop-blur-xl">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-2xl font-bold text-white shadow-lg shadow-indigo-500/20">+</div>
+              <h2 className="mt-5 text-2xl font-bold text-white">Start your knowledge graph</h2>
+              <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-white/55">Create your first concept, then connect it to prerequisites as your map grows. Your graph stays in this browser and is ready whenever you are.</p>
+              <button onClick={() => openEditor()} className="mt-6 rounded-lg bg-gradient-to-r from-indigo-500 to-cyan-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:brightness-110">Create your first node</button>
+              <p className="mt-4 text-xs text-white/30">You can also import a saved JSON backup from Settings.</p>
+            </div>
+          </Panel>
+        )}
       </ReactFlow>
     </div>
   );
