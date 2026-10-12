@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌌 DataFlow
+#  DataFlow
 
 ### Spatial Knowledge Graphs × FSRS Spaced Repetition
 
