@@ -243,7 +243,7 @@ Released under the [MIT License](LICENSE).
 
 <div align="center">
 
-**Built by [Bru](https://github.com/brundag22)** · CSE, JNNCE Shimoga (VTU)
+**Built by [Brunda G](https://github.com/brundag22)** · CSE, JNNCE Shimoga (VTU)
 
 *Map it. Link it. Remember it.* 🌌
 
