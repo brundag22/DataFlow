@@ -25,6 +25,7 @@ const CATEGORIES = ['All', 'formula', 'algorithm', 'architecture', 'concept', 't
 
 export function Sidebar({ settingsRequest = 0 }: { settingsRequest?: number }) {
   const { sidebarCollapsed, toggleSidebar, openModal, dueNodeIds, initialize, isInitialized, prerequisiteGateEnabled, setPrerequisiteGateEnabled } = useGraphStore();
+  const graphNodeSignature = useGraphStore(state => state.nodes.map(node => `${node.id}:${String(node.data.label)}`).join('|'));
   const [activeTab, setActiveTab] = useState<'nodes' | 'stats' | 'settings'>('nodes');
   const [nodes, setNodes] = useState<KnowledgeNode[]>([]);
   const [search, setSearch] = useState('');
@@ -51,7 +52,7 @@ export function Sidebar({ settingsRequest = 0 }: { settingsRequest?: number }) {
     };
     fetchNodes();
     loadStats();
-  }, [loadStats, isInitialized]);
+  }, [loadStats, isInitialized, graphNodeSignature]);
 
   const filteredNodes = nodes.filter(n => {
     const matchSearch = n.title.toLowerCase().includes(search.toLowerCase());
