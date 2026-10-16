@@ -43,7 +43,7 @@ Everything lives in your browser. No account, no server, no tracking.
 | ➕ | **Node CRUD** | Create, edit and delete nodes from a guided form; choose prerequisites by title, cycles are rejected, and deleting cleans up related data |
 | ∑ | **LaTeX** | KaTeX rendering for formulae |
 | 🔀 | **Mermaid diagrams** | Flowcharts, graphs and architecture diagrams inside any node |
-| ▶️ | **Code runner** | Run JavaScript in an isolated Web Worker with a captured console and a hard timeout |
+| ▶️ | **Code runner** | Run JavaScript in an isolated browser Web Worker with a captured console and a hard timeout |
 | 📝 | **Sanitized Markdown** | Rich descriptions with HTML sanitization |
 | 🔒 | **Prerequisite-aware review** | Optional gating: a node unlocks only after its prerequisites are stable |
 | 🧭 | **Auto-layout** | One-click Dagre top-to-bottom arrangement |
@@ -68,7 +68,23 @@ npm run dev
 
 Open the local URL that Vite prints (usually `http://localhost:5173`).
 
-On first launch, DataFlow opens an empty canvas with a short onboarding prompt. Select **Create your first node**, add a title, and optionally choose existing prerequisites from the multi-select list. Use **Settings → Export Data** for backups before clearing browser data or moving devices.
+On first launch, DataFlow opens an empty canvas with a short onboarding prompt. Select **Tutorial** for a guided walkthrough, or choose **Create your first node**, add a title, and optionally choose existing prerequisites from the multi-select list. Use **Settings → Export Data** for backups before clearing browser data or moving devices.
+
+### Content blocks
+
+The Markdown field supports normal Markdown plus executable web blocks. Fenced `mermaid` blocks render as diagrams, while fenced `js` or `javascript` blocks open the same isolated Web Worker runner used by the Sandbox tab. Other fenced languages stay as readable code and are not executed.
+
+````markdown
+```mermaid
+flowchart LR
+  A[Concept] --> B[Prerequisite]
+```
+
+```js
+console.log('This runs in a browser worker');
+return 2 + 2;
+```
+````
 
 ### 📜 Scripts
 
@@ -185,7 +201,7 @@ States: `new → learning → review ⇄ relearning`
 ## 🔐 Privacy and Security
 
 - 🏠 **Local-first:** all data stays in your browser's IndexedDB. Nothing is uploaded.
-- 🧱 **Isolated code execution:** node code runs in a Web Worker with a timeout, so an infinite loop is terminated and the app's data is out of reach.
+- 🧱 **Isolated code execution:** node code runs in a browser Web Worker with a timeout, so an infinite loop is terminated and the app's data is out of reach; no local machine or server runtime is used.
 - 🧼 **Sanitized rendering:** KaTeX runs with `trust: false`, HTML is sanitized, and Mermaid uses strict security.
 - 💾 **Your data, your backup:** export everything to JSON any time.
 

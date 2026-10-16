@@ -58,7 +58,7 @@ export function CodeExecutor({ code, className = '' }: Props) {
       <button onClick={() => setEditableCode(code)} className="px-3 py-2 text-white/40 text-sm hover:text-white/70 rounded-lg">Reset</button>
       {executionTime !== null && <span className="ml-auto text-[11px] text-white/25 font-mono">⏱ {executionTime.toFixed(2)}ms</span>}
     </div>
-    <p className="text-xs text-white/30">Code runs in a worker with no DOM, window, IndexedDB, or canvas access.</p>
+    <p className="text-xs text-white/30">Runs in this browser in an isolated Web Worker — no server, DOM, window, IndexedDB, or canvas access.</p>
     {output.length > 0 && <div className="rounded-xl bg-black/40 border border-white/10 overflow-hidden"><div className="px-4 py-2 border-b border-white/[0.06] text-[10px] text-white/30 uppercase tracking-wider">Console Output</div><div className="p-4 font-mono text-sm max-h-48 overflow-y-auto space-y-1">{output.map((line, i) => <div key={i} className={`break-all whitespace-pre-wrap ${line.type === 'error' ? 'text-red-400' : line.type === 'warn' ? 'text-yellow-400' : line.type === 'result' ? 'text-cyan-400' : 'text-emerald-400'}`}>{line.message}</div>)}</div></div>}
   </div>;
 }

@@ -8,7 +8,7 @@ const viewModes: { mode: ViewMode; icon: string; label: string }[] = [
   { mode: 'stats', icon: '📊', label: 'Dashboard' },
 ];
 
-export function Header() {
+export function Header({ onOpenTutorial }: { onOpenTutorial: () => void }) {
   const { viewMode, setViewMode, dueNodeIds, nodes, openEditor } = useGraphStore();
   const { startReview, loadDueCards, dueCards } = useReviewStore();
 
@@ -44,6 +44,9 @@ export function Header() {
 
       {/* Right Section */}
       <div className="flex items-center gap-3">
+        <button onClick={onOpenTutorial} className="flex items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1.5 text-sm text-white/50 transition hover:border-cyan-400/30 hover:bg-white/5 hover:text-white sm:px-3" aria-label="Open DataFlow tutorial">
+          <span className="text-cyan-300">?</span><span className="hidden sm:inline">Tutorial</span>
+        </button>
         {/* Node count */}
         <div className="text-xs text-white/20 font-mono hidden sm:block">
           {nodes.length} nodes

@@ -8,11 +8,13 @@ import { StatsPanel } from './components/review/StatsPanel';
 import { NodeEditorModal } from './components/graph/NodeEditorModal';
 import { useGraphStore } from './stores/graphStore';
 import { useReviewStore } from './stores/reviewStore';
+import { TutorialModal } from './components/tutorial/TutorialModal';
 
 function App() {
   const { initialize, isInitialized, initializationError, isModalOpen, viewMode } = useGraphStore();
   const { isReviewing, loadDueCards } = useReviewStore();
   const [loading, setLoading] = useState(true);
+  const [tutorialOpen, setTutorialOpen] = useState(false);
 
   useEffect(() => {
     async function init() {
@@ -65,11 +67,11 @@ function App() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <Header />
+        <Header onOpenTutorial={() => setTutorialOpen(true)} />
 
         {/* Content */}
         <main className="flex-1 relative overflow-hidden">
-          {viewMode === 'graph' && <GraphCanvas />}
+          {viewMode === 'graph' && <GraphCanvas onOpenTutorial={() => setTutorialOpen(true)} />}
           {viewMode === 'stats' && (
             <div className="h-full overflow-y-auto p-8">
               <StatsPanel />
@@ -82,6 +84,7 @@ function App() {
       {isModalOpen && <NodeModal />}
       <NodeEditorModal />
       {isReviewing && <ReviewPanel />}
+      <TutorialModal open={tutorialOpen} onClose={() => setTutorialOpen(false)} onCreateNode={() => useGraphStore.getState().openEditor()} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   ReactFlow,
   Background,
@@ -16,7 +16,7 @@ import { useGraphStore } from '../../stores/graphStore';
 
 const nodeTypes: NodeTypes = { knowledge: CustomNode };
 
-function GraphCanvasInner() {
+function GraphCanvasInner({ onOpenTutorial }: { onOpenTutorial: () => void }) {
   const { nodes, edges, onNodesChange, onEdgesChange, onNodeDragStop, autoLayout, openModal, openEditor, isInitialized } = useGraphStore();
   const { fitView } = useReactFlow();
 
@@ -88,7 +88,7 @@ function GraphCanvasInner() {
               <h2 className="mt-5 text-2xl font-bold text-white">Start your knowledge graph</h2>
               <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-white/55">Create your first concept, then connect it to prerequisites as your map grows. Your graph stays in this browser and is ready whenever you are.</p>
               <button onClick={() => openEditor()} className="mt-6 rounded-lg bg-gradient-to-r from-indigo-500 to-cyan-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:brightness-110">Create your first node</button>
-              <p className="mt-4 text-xs text-white/30">You can also import a saved JSON backup from Settings.</p>
+              <div className="mt-4 flex items-center justify-center gap-3 text-xs"><button onClick={onOpenTutorial} className="text-cyan-300/70 hover:text-cyan-200">Take the tutorial</button><span className="text-white/20">·</span><span className="text-white/30">Import a backup from Settings</span></div>
             </div>
           </Panel>
         )}
@@ -97,10 +97,10 @@ function GraphCanvasInner() {
   );
 }
 
-export function GraphCanvas() {
+export function GraphCanvas({ onOpenTutorial }: { onOpenTutorial: () => void }) {
   return (
     <ReactFlowProvider>
-      <GraphCanvasInner />
+      <GraphCanvasInner onOpenTutorial={onOpenTutorial} />
     </ReactFlowProvider>
   );
 }
