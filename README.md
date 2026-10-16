@@ -69,7 +69,7 @@ npm run dev
 
 Open the local URL that Vite prints (usually `http://localhost:5173`).
 
-On first launch, DataFlow opens an empty canvas with a short onboarding prompt. Select **Tutorial** for a guided walkthrough, or choose **Create your first node**, add a title, and optionally choose existing prerequisites from the multi-select list. Use **Settings → Appearance** to switch between dark and light mode, choose an accent color, or make interface text smaller or larger. These preferences persist in the browser. Use **Settings → Export Data** for backups before clearing browser data or moving devices.
+On first launch, DataFlow opens an empty canvas with a short onboarding prompt. Select **Tutorial** for a guided walkthrough, or choose **Create your first node**, add a title, and optionally choose existing prerequisites from the multi-select list. Click any node to view it, use **Edit node** (or the pencil action in the node list) to change it, and use **Delete** in the editor to remove it. Existing browsers that contain the former built-in sample graph receive a one-time cleanup of only those known sample IDs; user-created nodes are preserved. Use **Settings → Appearance** to switch between dark and light mode, choose an accent color, or make interface text smaller or larger. These preferences persist in the browser. Use **Settings → Export Data** for backups before clearing browser data or moving devices.
 
 ### Content blocks
 

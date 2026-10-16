@@ -3,6 +3,7 @@ import { type Node, type Edge, applyNodeChanges, applyEdgeChanges, type NodeChan
 import type { KnowledgeNode, ViewMode, SidebarTab } from '../types';
 import { db } from '../db/database';
 import { initializeCards, getDueNodeIds, getAllRetentions } from '../engine/scheduler';
+import { removeLegacySampleNodes } from '../db/legacyCleanup';
 import dagre from '@dagrejs/dagre';
 
 function knowledgeNodeToFlowNode(node: KnowledgeNode, position: { x: number; y: number }, isDue: boolean, retention: number | null, isLocked = false): Node {
@@ -131,6 +132,7 @@ export const useGraphStore = create<GraphState>((set, get) => ({
 
   initialize: async () => {
     try {
+      await removeLegacySampleNodes();
       const allNodes = await db.nodes.toArray();
       const positions = await db.positions.toArray();
       const posMap = new Map(positions.map(p => [p.nodeId, { x: p.x, y: p.y }]));

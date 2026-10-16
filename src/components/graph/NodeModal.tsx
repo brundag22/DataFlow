@@ -99,14 +99,10 @@ export function NodeModal() {
               </div>
             </div>
           </div>
-          <button 
-            onClick={closeModal}
-            aria-label="Close node details"
-            className="p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-          >
-            ✕
-          </button>
-          <button onClick={() => selectedNodeId && openEditor(selectedNodeId)} className="rounded-lg border border-indigo-400/30 px-3 py-2 text-xs text-indigo-300">Edit</button>
+          <div className="flex items-center gap-2">
+            <button onClick={() => selectedNodeId && openEditor(selectedNodeId)} className="rounded-lg border border-indigo-400/30 px-3 py-2 text-xs font-semibold text-indigo-300 hover:bg-indigo-500/10">✎ Edit node</button>
+            <button onClick={closeModal} aria-label="Close node details" className="rounded-lg p-2 text-white/40 transition-colors hover:bg-white/10 hover:text-white">✕</button>
+          </div>
         </div>
 
         {/* Tabs */}

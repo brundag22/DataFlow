@@ -15,6 +15,7 @@ function App() {
   const { isReviewing, loadDueCards } = useReviewStore();
   const [loading, setLoading] = useState(true);
   const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [settingsRequest, setSettingsRequest] = useState(0);
   const { theme, accent, textScale } = useUiStore();
   useEffect(() => {
     const root = document.documentElement;
@@ -70,7 +71,7 @@ function App() {
   return (
     <div className="h-screen w-screen flex bg-surface-950 overflow-hidden">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar settingsRequest={settingsRequest} />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
@@ -92,7 +93,7 @@ function App() {
       {isModalOpen && <NodeModal />}
       <NodeEditorModal />
       {isReviewing && <ReviewPanel />}
-      <TutorialModal open={tutorialOpen} onClose={() => setTutorialOpen(false)} onCreateNode={() => useGraphStore.getState().openEditor()} />
+      <TutorialModal open={tutorialOpen} onClose={() => setTutorialOpen(false)} onCreateNode={() => useGraphStore.getState().openEditor()} onOpenSettings={() => setSettingsRequest(value => value + 1)} />
     </div>
   );
 }

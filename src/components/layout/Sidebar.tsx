@@ -23,7 +23,7 @@ const DIFFICULTY_DOTS: Record<string, number> = {
 
 const CATEGORIES = ['All', 'formula', 'algorithm', 'architecture', 'concept', 'theorem'];
 
-export function Sidebar() {
+export function Sidebar({ settingsRequest = 0 }: { settingsRequest?: number }) {
   const { sidebarCollapsed, toggleSidebar, openModal, dueNodeIds, initialize, isInitialized, prerequisiteGateEnabled, setPrerequisiteGateEnabled } = useGraphStore();
   const [activeTab, setActiveTab] = useState<'nodes' | 'stats' | 'settings'>('nodes');
   const [nodes, setNodes] = useState<KnowledgeNode[]>([]);
@@ -40,6 +40,9 @@ export function Sidebar() {
     { value: 'amber', label: 'Amber', color: '#fbbf24' },
     { value: 'emerald', label: 'Emerald', color: '#34d399' },
   ];
+  useEffect(() => {
+    if (settingsRequest > 0) setActiveTab('settings');
+  }, [settingsRequest]);
 
   useEffect(() => {
     const fetchNodes = async () => {
@@ -153,6 +156,7 @@ export function Sidebar() {
                     {isDue && (
                       <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_6px_rgba(99,102,241,0.5)] animate-pulse shrink-0" />
                     )}
+                    <button onClick={(event) => { event.stopPropagation(); useGraphStore.getState().openEditor(node.id); }} aria-label={`Edit ${node.title}`} className="rounded-md px-1.5 py-1 text-[11px] text-white/25 opacity-0 transition group-hover:opacity-100 hover:bg-white/10 hover:text-white/80">✎</button>
                   </div>
                 );
               })}
