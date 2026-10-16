@@ -9,12 +9,20 @@ import { NodeEditorModal } from './components/graph/NodeEditorModal';
 import { useGraphStore } from './stores/graphStore';
 import { useReviewStore } from './stores/reviewStore';
 import { TutorialModal } from './components/tutorial/TutorialModal';
-
+import { useUiStore } from './stores/uiStore';
 function App() {
   const { initialize, isInitialized, initializationError, isModalOpen, viewMode } = useGraphStore();
   const { isReviewing, loadDueCards } = useReviewStore();
   const [loading, setLoading] = useState(true);
   const [tutorialOpen, setTutorialOpen] = useState(false);
+  const { theme, accent, textScale } = useUiStore();
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.theme = theme;
+    root.dataset.accent = accent;
+    root.dataset.textScale = textScale;
+    root.style.colorScheme = theme;
+  }, [theme, accent, textScale]);
 
   useEffect(() => {
     async function init() {

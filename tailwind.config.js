@@ -5,18 +5,30 @@ export default {
   theme: {
     extend: {
       colors: {
+        indigo: {
+          300: 'rgb(var(--accent-primary-rgb) / <alpha-value>)',
+          400: 'rgb(var(--accent-primary-rgb) / <alpha-value>)',
+          500: 'rgb(var(--accent-primary-rgb) / <alpha-value>)',
+          600: 'rgb(var(--accent-primary-strong-rgb) / <alpha-value>)',
+        },
+        cyan: {
+          200: 'rgb(var(--accent-secondary-rgb) / <alpha-value>)',
+          300: 'rgb(var(--accent-secondary-rgb) / <alpha-value>)',
+          400: 'rgb(var(--accent-secondary-rgb) / <alpha-value>)',
+          500: 'rgb(var(--accent-secondary-rgb) / <alpha-value>)',
+        },
         surface: {
-          50: '#f0f4ff',
-          100: '#e0e8ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#1e1b4b',
-          900: '#0f0d2e',
-          950: '#080620',
+          50: 'var(--surface-50)',
+          100: 'var(--surface-100)',
+          200: 'var(--surface-200)',
+          300: 'var(--surface-300)',
+          400: 'var(--surface-400)',
+          500: 'var(--surface-500)',
+          600: 'var(--surface-600)',
+          700: 'var(--surface-700)',
+          800: 'var(--surface-800)',
+          900: 'var(--surface-900)',
+          950: 'var(--surface-950)',
         },
         accent: {
           cyan: '#22d3ee',

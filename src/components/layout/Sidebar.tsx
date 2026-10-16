@@ -4,6 +4,7 @@ import { useReviewStore } from '../../stores/reviewStore';
 import { db } from '../../db/database';
 import type { KnowledgeNode } from '../../types';
 import { exportData, importData } from '../../db/transfer';
+import { useUiStore, type AccentName, type TextScale, type ThemeMode } from '../../stores/uiStore';
 
 const CATEGORY_CONFIG: Record<string, { color: string; dot: string }> = {
   formula: { color: 'bg-cyan-400', dot: 'bg-cyan-400' },
@@ -30,6 +31,15 @@ export function Sidebar() {
   const [category, setCategory] = useState('All');
   const { stats, loadStats } = useReviewStore();
   const importRef = useRef<HTMLInputElement>(null);
+  const { theme, accent, textScale, setTheme, setAccent, setTextScale } = useUiStore();
+  const accentOptions: { value: AccentName; label: string; color: string }[] = [
+    { value: 'indigo', label: 'Indigo', color: '#818cf8' },
+    { value: 'cyan', label: 'Cyan', color: '#22d3ee' },
+    { value: 'violet', label: 'Violet', color: '#a78bfa' },
+    { value: 'rose', label: 'Rose', color: '#fb7185' },
+    { value: 'amber', label: 'Amber', color: '#fbbf24' },
+    { value: 'emerald', label: 'Emerald', color: '#34d399' },
+  ];
 
   useEffect(() => {
     const fetchNodes = async () => {
@@ -181,6 +191,39 @@ export function Sidebar() {
 
         {!sidebarCollapsed && activeTab === 'settings' && (
           <div className="p-4 space-y-6 overflow-y-auto h-full">
+            <div className="space-y-3">
+              <div>
+                <div className="text-sm font-semibold text-white/70">Appearance</div>
+                <p className="mt-1 text-xs leading-5 text-white/35">Tune the workspace without changing your graph data.</p>
+              </div>
+              <div className="grid grid-cols-2 gap-2" role="group" aria-label="Theme mode">
+                {(['dark', 'light'] as ThemeMode[]).map(mode => (
+                  <button key={mode} onClick={() => setTheme(mode)} className={`rounded-lg border px-3 py-2 text-xs font-semibold capitalize transition ${theme === mode ? 'border-indigo-400/50 bg-indigo-500/20 text-white' : 'border-white/10 bg-white/[0.03] text-white/45 hover:bg-white/[0.07]'}`}>
+                    <span className="mr-1.5">{mode === 'dark' ? '◐' : '☼'}</span>{mode} mode
+                  </button>
+                ))}
+              </div>
+              <div>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/35">Accent color</div>
+                <div className="grid grid-cols-3 gap-2">
+                  {accentOptions.map(option => (
+                    <button key={option.value} onClick={() => setAccent(option.value)} aria-label={`Use ${option.label} accent`} className={`flex items-center gap-1.5 rounded-lg border px-2 py-2 text-left text-[11px] transition ${accent === option.value ? 'border-white/30 bg-white/10 text-white' : 'border-white/[0.08] text-white/45 hover:bg-white/[0.06]'}`}>
+                      <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: option.color }} />{option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/35">Text size</div>
+                <div className="grid grid-cols-3 gap-2">
+                  {([{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Default' }, { value: 'lg', label: 'Large' }] as { value: TextScale; label: string }[]).map(option => (
+                    <button key={option.value} onClick={() => setTextScale(option.value)} className={`rounded-lg border px-2 py-2 transition ${textScale === option.value ? 'border-indigo-400/50 bg-indigo-500/20 text-white' : 'border-white/[0.08] text-white/45 hover:bg-white/[0.06]'}`}>
+                      <span className={option.value === 'sm' ? 'text-xs' : option.value === 'lg' ? 'text-lg' : 'text-sm'}>A</span><span className="ml-1 text-[10px]">{option.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
             <div>
               <label className="text-sm text-white/50 block mb-2">Desired Retention</label>
               <input type="range" min="80" max="99" defaultValue="90" className="w-full accent-indigo-500" />

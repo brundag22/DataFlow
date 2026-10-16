@@ -50,6 +50,7 @@ Everything lives in your browser. No account, no server, no tracking.
 | 📊 | **Analytics** | Due load, mastered count, average retention, card-state distribution, 7-day activity, real study streak |
 | 💾 | **Export / Import** | Back up or move your whole graph as one validated JSON file |
 | ♿ | **Accessible and responsive** | Keyboard shortcuts, focus rings, aria-labels, collapsible mobile sidebar |
+| 🎨 | **Appearance controls** | Persistent dark/light mode, six accent palettes, and small/default/large text scale options |
 
 > 🆕 Starts with a clean, empty workspace so your graph reflects what you actually want to learn. Create nodes from the **+** button or import a backup from Settings.
 
@@ -68,7 +69,7 @@ npm run dev
 
 Open the local URL that Vite prints (usually `http://localhost:5173`).
 
-On first launch, DataFlow opens an empty canvas with a short onboarding prompt. Select **Tutorial** for a guided walkthrough, or choose **Create your first node**, add a title, and optionally choose existing prerequisites from the multi-select list. Use **Settings → Export Data** for backups before clearing browser data or moving devices.
+On first launch, DataFlow opens an empty canvas with a short onboarding prompt. Select **Tutorial** for a guided walkthrough, or choose **Create your first node**, add a title, and optionally choose existing prerequisites from the multi-select list. Use **Settings → Appearance** to switch between dark and light mode, choose an accent color, or make interface text smaller or larger. These preferences persist in the browser. Use **Settings → Export Data** for backups before clearing browser data or moving devices.
 
 ### Content blocks
 
